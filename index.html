@@ -1,0 +1,132 @@
+<!doctype html>
+ 
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Bootstrap 3 Form Builder</title>
+
+	<!-- <link rel="stylesheet" href="libs/external/jquery-ui.min.js" /> -->
+	<link rel="stylesheet" href="libs/external/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="libs/external/font-awesome/css/font-awesome.min.css" />
+
+
+	<script src="libs/external/jquery.min.js"></script>
+	<script src="libs/external/jquery-ui.min.js"></script>
+
+	<script src="libs/external/bootstrap/js/bootstrap.min.js"></script>
+    <script src="libs/external/beautify-html.js"></script>
+
+	<link rel="stylesheet" href="libs/ide.css" />
+    <script src="libs/ide.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">Bootstrap Form IDE</a>
+    </div>
+    <form class="navbar-form navbar-left">
+        <!--
+        <div class="form-group">
+            <select class="form-control" id="n-columns">
+                <option value="1">1 Column</option>
+                <option value="2">2 Columns</option>
+            </select>
+        </div>
+        -->
+        <button class="btn btn-xs btn-primary" data-clipboard-text = "testing" id="btn-get-html">
+            Copy HTML
+        </button>
+
+        <div class="form-group">
+            <select class="form-control input-sm" id="edt-col-number">
+                <option value="1">1 Column</option>
+                <option value="2">2 Columns</option>
+                <option value="3" selected="selected">3 Columns</option>
+                <option value="4">4 Columns</option>
+                <option value="6">6 Columns</option>
+                <option value="12">12 Columns</option>
+            </select>
+        </div>
+
+        <button class="btn btn-xs btn-primary" id="btn-add-row">
+            <i class="glyphicon glyphicon-plus-sign"></i>New Row
+        </button>
+    </form>
+</nav>
+
+<div class="container-fluid">
+<div style="margin-top: -20px;">
+    <div class="row">
+        <div class="col-md-2" id="widgets">
+            <h3>Widgets</h3>
+            <form role="form">
+                <div class="draggable">
+                <div class="form-group">
+                    <label for="input-text-1" >Text Input</label>
+                    <input type="email" class="form-control" id="input-id-1" placeholder="Enter email">
+                </div>
+                </div>
+                <div class="form-group draggable">
+                    <label for="input-password-1" >Password</label>
+                    <input type="password" class="form-control" id="input-password-1"
+                           placeholder="Password">
+                </div>
+                <div class="form-group draggable">
+                    <label for="select-1" >Select</label>
+                    <select class="form-control" id="select-1">
+                        <option value="Option 1">Option 1</option>
+                        <option value="Option 2">Option 2</option>
+                        <option value="Option 3">Option 3</option>
+                    </select>
+                </div>
+                <div class="form-group draggable">
+                    <label for="input-file-1" >File input</label>
+                    <input type="file" id="input-file-1">
+                </div>
+                <div class="checkbox draggable">
+                    <label>
+                        <input type="checkbox"> <span >Check me out</span>
+                    </label>
+                </div>
+                <div class="form-group draggable" style="padding-right: 20px;">
+                    <button type="submit" class="btn btn-default" >Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-10" id="form-container">
+            <div id="form-area">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+</body>
+</html>
+
+
+<div id="tmp-row" style="display: none;">
+    <div class="row form-row">
+    </div>
+</div>
+
+<div id="tmp-cell" style="display: none;">
+    <div class="cell sortable">
+        <div class="btn-group cell-actions" role="group" style="display: none;">
+            <button type="button" class="btn btn-xs btn-default btn-del-cell">
+                <i class="fa fa-trash"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-default btn-size-cell" data-size="-1">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-default btn-size-cell" data-size="1">
+                <i class="fa fa-arrow-right"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-default btn-split-cell">
+                <i class="fa fa-columns"></i>
+            </button>
+        </div>
+    </div>
+</div>

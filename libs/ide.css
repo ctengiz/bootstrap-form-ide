@@ -1,0 +1,63 @@
+body {
+    background-color: #ddd;
+}
+
+#widgets{
+    padding: 0px 30px 30px 30px;
+    background-color: #fff;
+}
+
+#form-container {
+    padding-top: 5px;
+}
+
+#form-area {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 5px 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    min-height: 100px;
+}
+
+.droppable-active {
+    background-color: #ffe !important;
+}
+
+.tools a {
+    cursor: pointer;
+    font-size: 80%; }
+
+#form-area .col-md-12,
+#form-area .col-md-11,
+#form-area .col-md-10,
+#form-area .col-md-9,
+#form-area .col-md-8,
+#form-area .col-md-7,
+#form-area .col-md-6,
+#form-area .col-md-5,
+#form-area .col-md-4,
+#form-area .col-md-3,
+#form-area .col-md-2,
+#form-area .col-md-1
+{
+    min-height: 40px;
+    border: 1px dotted lightgray;
+    border-collapse: collapse;
+}
+
+
+.draggable {
+    cursor: move;
+}
+
+.cell-actions {
+    position: absolute;
+    bottom: -10px;
+    left: 2px;
+    z-index: 1000;
+}
+
+
+.active-row {
+    border: 1px dotted red;
+}
