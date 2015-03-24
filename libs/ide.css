@@ -7,8 +7,17 @@ body {
     background-color: #fff;
 }
 
+#toggle-sidebar {
+    color:slategrey;
+    padding:1px 2px;
+    float: left;
+    position: relative;
+    z-index: 10;
+}
+
 #form-container {
     padding-top: 5px;
+    margin-top: -25px;
 }
 
 #form-area {
@@ -52,7 +61,7 @@ body {
 
 .cell-actions {
     position: absolute;
-    bottom: -10px;
+    bottom: -20px;
     left: 2px;
     z-index: 1000;
 }
@@ -61,3 +70,7 @@ body {
 .active-row {
     border: 1px dotted red;
 }
+
+
+
+
