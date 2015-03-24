@@ -26,19 +26,19 @@
         <a class="navbar-brand" href="#">Bootstrap Form IDE</a>
     </div>
     <form class="navbar-form navbar-left">
-        <!--
         <div class="form-group">
-            <select class="form-control" id="n-columns">
-                <option value="1">1 Column</option>
-                <option value="2">2 Columns</option>
-            </select>
-        </div>
-        -->
-        <button class="btn btn-xs btn-primary" data-clipboard-text = "testing" id="btn-get-html">
-            Copy HTML
-        </button>
 
-        <div class="form-group">
+            <!-- todo !
+            <select class="form-control input-sm" id="edt-form-style">
+                <option value="horizontal">Basic</option>
+                <option value="horizontal">Basic+Columns</option>
+                <option value="inline">Inline</option>
+                <option value="horizontal">Horizontal</option>
+                <option value="horizontal">Horizontal+Columns</option>
+            </select>
+            -->
+
+
             <select class="form-control input-sm" id="edt-col-number">
                 <option value="1">1 Column</option>
                 <option value="2">2 Columns</option>
@@ -50,53 +50,245 @@
         </div>
 
         <button class="btn btn-xs btn-primary" id="btn-add-row">
-            <i class="glyphicon glyphicon-plus-sign"></i>New Row
+            <i class="fa fa-plus-square"></i> New Row
         </button>
     </form>
 </nav>
 
 <div class="container-fluid">
-<div style="margin-top: -20px;">
+    <div style="margin-top: -20px;">
     <div class="row">
-        <div class="col-md-2" id="widgets">
-            <h3>Widgets</h3>
-            <form role="form">
-                <div class="draggable">
-                <div class="form-group">
-                    <label for="input-text-1" >Text Input</label>
-                    <input type="email" class="form-control" id="input-id-1" placeholder="Enter email">
+
+        <div class="col-md-3" id="widgets">
+
+            <div role="tabpanel">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab-widgets" aria-controls="home" role="tab" data-toggle="tab">Widgets</a></li>
+                    <li role="presentation"><a href="#tab-properties" aria-controls="profile" role="tab" data-toggle="tab">Properties</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content" style="height: 500px; overflow-y: scroll;">
+                    <div role="tabpanel" class="tab-pane active" id="tab-widgets">
+                        <h3>Widgets</h3>
+
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#wdgStandard" aria-expanded="true" aria-controls="wdgStandard">
+                                            Inputs
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="wdgStandard" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label">Static Text</label>
+                                                <p class="form-control-static">Static Text</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label" for="input-id-1">Text Input</label>
+                                                <input type="text" class="form-control" id="input-id-1" placeholder="Text input">
+                                            </div>
+                                        </div>
+                                        <!-- text, password, datetime, datetime-local, date, month, time, week, number, email, url, search, tel, color -->
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label">Prepend</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">@</span>
+                                                    <input type="text" class="form-control" placeholder="prepend">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label">Append</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="append">
+                                                    <span class="input-group-addon">@</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label">Append Checkbox</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="append checkbocx">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label">Button Addon</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="With Button">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="button">Go!</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label">Dropdown Addon</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" aria-label="...">
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action <span class="caret"></span></button>
+                                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            <li><a href="#">Action</a></li>
+                                                            <li><a href="#">Another action</a></li>
+                                                            <li><a href="#">Something else here</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a href="#">Separated link</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label">Segmented Button</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" aria-label="...">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-default" type="button">Go!</button>
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            <li><a href="#">Action</a></li>
+                                                            <li><a href="#">Another action</a></li>
+                                                            <li><a href="#">Something else here</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a href="#">Separated link</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="draggable">
+                                            <div class="form-group">
+                                                <label class="control-label" for="input-id-1">Text Input</label>
+                                                <textarea class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Of Input Edits -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Radios / Checkboxes
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- En Of Radios / Checkboxes -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingThree">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            Selects
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                    <div class="panel-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Of Selects -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingFour">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            Buttons
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                    <div class="panel-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- En Of Buttons -->
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="heading5">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                            Containers
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+                                    <div class="panel-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- En Of Containers -->
+
+                        </div>
+                    </div>
+                    <!-- End Of Widgets -->
+
+
+                    <div role="tabpanel" class="tab-pane" id="tab-properties">
+                        <h3>P</h3>
+                    </div>
+                    <!-- End Of Properties -->
+
                 </div>
-                </div>
-                <div class="form-group draggable">
-                    <label for="input-password-1" >Password</label>
-                    <input type="password" class="form-control" id="input-password-1"
-                           placeholder="Password">
-                </div>
-                <div class="form-group draggable">
-                    <label for="select-1" >Select</label>
-                    <select class="form-control" id="select-1">
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                        <option value="Option 3">Option 3</option>
-                    </select>
-                </div>
-                <div class="form-group draggable">
-                    <label for="input-file-1" >File input</label>
-                    <input type="file" id="input-file-1">
-                </div>
-                <div class="checkbox draggable">
-                    <label>
-                        <input type="checkbox"> <span >Check me out</span>
-                    </label>
-                </div>
-                <div class="form-group draggable" style="padding-right: 20px;">
-                    <button type="submit" class="btn btn-default" >Submit</button>
+
+            </div>
+
+
+        </div>
+
+        <a id="toggle-sidebar" href="#" class="toggles">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+
+        <div class="col-md-9" id="form-container">
+            <form>
+                <div id="form-area">
                 </div>
             </form>
-        </div>
-        <div class="col-md-10" id="form-container">
-            <div id="form-area">
-            </div>
         </div>
     </div>
 </div>

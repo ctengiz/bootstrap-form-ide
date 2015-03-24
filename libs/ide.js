@@ -3,7 +3,7 @@
  */
 
 var active_row;
-
+var side_bar_visible = true;
 
 var set_droppbable = function(elm) {
     $(elm).droppable({
@@ -11,8 +11,13 @@ var set_droppbable = function(elm) {
         helper: "clone",
         hoverClass: "droppable-active",
         drop: function( event, ui ) {
+
+            /* todo
+            //Make dropped row as active row
+            $(".form-row").removeClass("active-row");
             active_row = $(this).parent();
             $(active_row).addClass("active-row");
+            */
 
             var $orig = $(ui.draggable);
             if(!$(ui.draggable).hasClass("dropped")) {
@@ -183,7 +188,8 @@ $(document).ready(function() {
         }
 
         var tmp_cell = $("#tmp-cell").html();
-        var target_div = $(tmp_cell).appendTo(parent_row);
+
+        var target_div = $(tmp_cell).insertAfter(parent_div);
         target_div.addClass("col-md-" + size);
         target_div.data("col-wd", size);
         target_div.data("col-no", 1);
@@ -202,7 +208,7 @@ $(document).ready(function() {
         return false;
     });
 
-
+    /* todo !
     $("#form-area").on("click", ".cell", function(elm) {
         var row = $(this).parent();
         if (!$(row).hasClass("active-row")) {
@@ -214,6 +220,29 @@ $(document).ready(function() {
             active_row = null;
         }
         return false;
+    });
+    */
+
+    $("#toggle-sidebar").click(function(){
+        if (side_bar_visible) {
+            $("#widgets").hide();
+            $("#form-container").removeClass("col-md-9");
+            $("#form-container").addClass("col-md-12");
+            side_bar_visible = false;
+
+            $(this).children("i").addClass('fa-chevron-right');
+            $(this).children("i").removeClass('fa-chevron-left');
+
+        } else {
+            $("#widgets").show();
+            $("#form-container").removeClass("col-md-12");
+            $("#form-container").addClass("col-md-9");
+            side_bar_visible = true;
+
+            $(this).children("i").addClass('fa-chevron-left');
+            $(this).children("i").removeClass('fa-chevron-right');
+
+        }
     })
 
 
