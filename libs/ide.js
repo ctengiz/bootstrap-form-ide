@@ -34,6 +34,9 @@ var set_droppbable = function(elm) {
              */
 
             var $orig = $(ui.draggable);
+            var clsbtn = '<button type="button" class="close" aria-label="Close" style="float: right;"><span aria-hidden="true">&times;</span></button>';
+
+            $(clsbtn).prependTo($orig);
             if(!$(ui.draggable).hasClass("dropped")) {
                 var $el = $orig
                     .clone()
@@ -217,7 +220,7 @@ $(document).ready(function() {
     });
 
     $("#form-area").on("click", ".btn-del-cell", function (ev) {
-
+        var parent_div = $(this).parent().parent().remove();
 
         return false;
     });
@@ -257,7 +260,13 @@ $(document).ready(function() {
             $(this).children("i").removeClass('fa-chevron-right');
 
         }
-    })
+    });
+
+
+    $("#form-area").on("click", ".close", function (ev) {
+        $(this).parent().remove();
+        return false;
+    });
 
 
 });
