@@ -36,13 +36,14 @@ var set_droppbable = function(elm) {
             var $orig = $(ui.draggable);
             var clsbtn = '<button type="button" class="close" aria-label="Close" style="float: right;"><span aria-hidden="true">&times;</span></button>';
 
-            $(clsbtn).prependTo($orig);
             if(!$(ui.draggable).hasClass("dropped")) {
                 var $el = $orig
                     .clone()
                     .addClass("dropped")
                     .css({"position": "static", "left": null, "right": null, "width":"100%", "height":null})
                     .appendTo(this);
+
+                $(clsbtn).prependTo($el);
 
                 // update id
                 var id = $orig.find(":input").attr("id");
@@ -101,6 +102,13 @@ var get_modal = function(content) {
 
 
 $(document).ready(function() {
+    $("#form-area").sortable({
+        handle: ".btn-move-row",
+        cancel: "",
+        axis: "y",
+        containment: "parent",
+        tolerance: "pointer"
+    });
 
     set_draggable();
 
@@ -138,21 +146,40 @@ $(document).ready(function() {
             $(cell).data("col-no", i);
             $(cell).data("col-wd", col_wd);
 
-            set_droppbable(cell)
+            set_droppbable(cell); //for widgets to be sorted
         }
+
+        $(new_row).sortable({
+            axis: "x",
+            containment: "parent",
+            tolerance: "pointer"
+        }); //for cells to be sorted
+
         return false;
     });
 
+
+    $("#form-area").on("mouseover", ".row", function(el){
+        $(this).children(".row-actions").show();
+    });
+
+    $("#form-area").on("mouseout", ".row", function(el){
+        $(this).children(".row-actions").hide();
+    });
+
+
     $("#form-area").on("mouseover", ".cell", function(el){
         $(this).children(".cell-actions").show();
-
+        //return false; --> Özellikle kapattım...
     });
 
     $("#form-area").on("mouseout", ".cell", function(el){
         $(this).children(".cell-actions").hide();
-        return false;
+        //return false; --> Özellikle kapattım. Row mouse-out tetiklenmiyor..
     });
 
+
+    //Expand or Shrink Cell
     $("#form-area").on("click", ".btn-size-cell", function (ev) {
         var size = parseInt($(this).data('size'));
 
@@ -188,10 +215,10 @@ $(document).ready(function() {
     });
 
 
+    //Split Cell
     $("#form-area").on("click", ".btn-split-cell", function (ev) {
         var parent_div = $(this).parent().parent();
         var parent_col_wd = parseInt($(parent_div).data("col-wd"));
-        var parent_row = $(parent_div).parent();
 
         if (parent_col_wd < 1) {
             alert ("This cell is can not be splitted anymore.");
@@ -219,8 +246,30 @@ $(document).ready(function() {
         return false;
     });
 
+
+    //Delete cell
     $("#form-area").on("click", ".btn-del-cell", function (ev) {
-        var parent_div = $(this).parent().parent().remove();
+
+        var parent_div = $(this).parent().parent();
+        var parent_col_wd = parseInt($(parent_div).data("col-wd"));
+
+        var target_div = $(parent_div).prev();
+        var target_col_no = $(target_div).data("col-no");
+        var target_col_wd = parseInt($(target_div).data("col-wd"));
+
+        if (!target_col_no) {
+            target_div = $(parent_div).next();
+            target_col_no = $(target_div).data("col-no");
+            target_col_wd = parseInt($(target_div).data("col-wd"));
+        }
+
+        if (target_col_no) {
+            target_div.removeClass("col-md-" + target_col_wd);
+            target_div.addClass("col-md-" + (target_col_wd + parent_col_wd));
+            target_div.data("col-wd", (target_col_wd + parent_col_wd));
+        }
+
+        $(parent_div).remove();
 
         return false;
     });
@@ -262,7 +311,7 @@ $(document).ready(function() {
         }
     });
 
-
+    //Delete Widget
     $("#form-area").on("click", ".close", function (ev) {
         $(this).parent().remove();
         return false;

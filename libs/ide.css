@@ -32,6 +32,10 @@ body {
     background-color: #ffe !important;
 }
 
+.placeholder {
+    background-color: #bce8f1 !important;
+}
+
 .tools a {
     cursor: pointer;
     font-size: 80%; }
@@ -63,6 +67,13 @@ body {
     position: absolute;
     bottom: -20px;
     left: 2px;
+    z-index: 1000;
+}
+
+.row-actions {
+    position: absolute;
+    float: left;
+    left: 5px;
     z-index: 1000;
 }
 

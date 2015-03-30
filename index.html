@@ -86,111 +86,93 @@
                                 <div id="wdgStandard" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body">
 
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label">Static Text</label>
-                                                <p class="form-control-static">Static Text</p>
-                                            </div>
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Static Text</label>
+                                            <p class="form-control-static">Static Text</p>
                                         </div>
 
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label" for="input-id-1">Text Input</label>
-                                                <input type="text" class="form-control" id="input-id-1" placeholder="Text input">
-                                            </div>
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Text Input</label>
+                                            <input type="text" class="form-control" placeholder="Text input">
                                         </div>
                                         <!-- text, password, datetime, datetime-local, date, month, time, week, number, email, url, search, tel, color -->
 
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label">Prepend</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">@</span>
-                                                    <input type="text" class="form-control" placeholder="prepend">
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Prepend</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">@</span>
+                                                <input type="text" class="form-control" placeholder="prepend">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Append</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="append">
+                                                <span class="input-group-addon">@</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Append Checkbox</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="append checkbocx">
+                                                <span class="input-group-addon">
+                                                    <input type="checkbox">
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Button Addon</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="With Button">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button">Go!</button>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Dropdown Addon</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" aria-label="...">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action <span class="caret"></span></button>
+                                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                        <li><a href="#">Action</a></li>
+                                                        <li><a href="#">Another action</a></li>
+                                                        <li><a href="#">Something else here</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="#">Separated link</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label">Append</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="append">
-                                                    <span class="input-group-addon">@</span>
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Segmented Button</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" aria-label="...">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-default" type="button">Go!</button>
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                        <li><a href="#">Action</a></li>
+                                                        <li><a href="#">Another action</a></li>
+                                                        <li><a href="#">Something else here</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="#">Separated link</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label">Append Checkbox</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="append checkbocx">
-                                                    <span class="input-group-addon">
-                                                        <input type="checkbox">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label">Button Addon</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="With Button">
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button">Go!</button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label">Dropdown Addon</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" aria-label="...">
-                                                    <div class="input-group-btn">
-                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action <span class="caret"></span></button>
-                                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                            <li><a href="#">Action</a></li>
-                                                            <li><a href="#">Another action</a></li>
-                                                            <li><a href="#">Something else here</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#">Separated link</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label">Segmented Button</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" aria-label="...">
-                                                    <div class="input-group-btn">
-                                                        <button class="btn btn-default" type="button">Go!</button>
-                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                            <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                            <li><a href="#">Action</a></li>
-                                                            <li><a href="#">Another action</a></li>
-                                                            <li><a href="#">Something else here</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#">Separated link</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <label class="control-label" for="input-id-1">Text Area</label>
-                                                <textarea class="form-control" rows="3"></textarea>
-                                            </div>
+                                        <div class="form-group draggable">
+                                            <label class="control-label">Text Area</label>
+                                            <textarea class="form-control" rows="3"></textarea>
                                         </div>
 
 
@@ -211,17 +193,14 @@
                                     <div class="panel-body">
 
                                         <label class="control-label">Checkbox</label>
-                                        <div class="draggable">
-                                            <div class="form-group">
-                                                <div class="checkbox">
-                                                    <label> <input type="checkbox" value="">Check Box</label>
-                                                </div>
+                                        <div class="form-group draggable">
+                                            <div class="checkbox">
+                                                <label> <input type="checkbox" value="">Check Box</label>
                                             </div>
                                         </div>
 
                                         <label class="control-label">Inline Checkbox</label>
-                                        <div class="draggable">
-                                            <div class="form-group">
+                                            <div class="form-group draggable">
                                                 <label class="checkbox-inline">
                                                     <input type="checkbox" value="">Check One</label>
                                                 </label>
@@ -229,7 +208,6 @@
                                                     <input type="checkbox" value="">Check One</label>
                                                 </label>
                                             </div>
-                                        </div>
 
                                         <label class="control-label">Radiobox</label>
                                         <div class="draggable">
@@ -588,11 +566,20 @@
 
 <div id="tmp-row" style="display: none;">
     <div class="row form-row">
+        <div class="btn-group-vertical row-actions" role="group" style="display: none;">
+            <button type="button" class="btn btn-xs btn-default btn-del-row">
+                <i class="fa fa-trash"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-default btn-move-row">
+                <i class="fa fa-arrows-v"></i>
+            </button>
+        </div>
+
     </div>
 </div>
 
 <div id="tmp-cell" style="display: none;">
-    <div class="cell sortable">
+    <div class="cell ">
         <div class="btn-group cell-actions" role="group" style="display: none;">
             <button type="button" class="btn btn-xs btn-default btn-del-cell">
                 <i class="fa fa-trash"></i>
