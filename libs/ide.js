@@ -2,6 +2,8 @@
  * Created by cagataytengiz on 23.03.15.
  */
 
+/* todo : show / hide cell markers */
+
 var active_row;
 var side_bar_visible = true;
 
@@ -18,6 +20,18 @@ var set_droppbable = function(elm) {
             active_row = $(this).parent();
             $(active_row).addClass("active-row");
             */
+
+            /* todo :
+            for labels css width property should not be set
+             */
+
+            /* todo :
+            widget-container class should accept widgets as children
+             */
+
+            /* todo :
+            set id for collapsible and tab panel
+             */
 
             var $orig = $(ui.draggable);
             if(!$(ui.draggable).hasClass("dropped")) {
@@ -247,6 +261,3 @@ $(document).ready(function() {
 
 
 });
-
-
-
