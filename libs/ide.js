@@ -78,27 +78,32 @@ var set_draggable = function() {
 };
 
 
-var get_modal = function(content) {
-    var modal = $('<div class="modal" style="overflow: auto;" tabindex="-1">\
-			<div class="modal-dialog">\
-				<div class="modal-content">\
-					<div class="modal-header">\
-						<a type="button" class="close"\
-							data-dismiss="modal" aria-hidden="true">&times;</a>\
-						<h4 class="modal-title">Edit HTML</h4>\
-					</div>\
-					<div class="modal-body ui-front">\
-						<textarea class="form-control" \
-							style="min-height: 200px; margin-bottom: 10px;\
-							font-family: Monaco, Fixed">'+content+'</textarea>\
-						<button class="btn btn-success">Update</button>\
-					</div>\
-				</div>\
-			</div>\
-			</div>').appendTo(document.body);
+var add_row = function(col_nr) {
+    var tmp_row = $("#tmp-row").html();
+    var tmp_cell = $("#tmp-cell").html();
 
-    return modal;
+    var col_wd = 12 / col_nr;
+
+    var class_text = 'col-md-' + col_wd;
+
+    var new_row = $(tmp_row).appendTo($("#form-area"));
+    for (var i = 1; i <= col_nr; i++) {
+        var cell = $(tmp_cell).appendTo(new_row);
+        $(cell).addClass(class_text);
+        $(cell).data("col-no", i);
+        $(cell).data("col-wd", col_wd);
+
+        set_droppbable(cell); //for widgets to be sorted
+    }
+
+    $(new_row).sortable({
+        axis: "x",
+        containment: "parent",
+        tolerance: "pointer"
+    }); //for cells to be sorted
+
 };
+
 
 
 $(document).ready(function() {
@@ -111,6 +116,7 @@ $(document).ready(function() {
     });
 
     set_draggable();
+    add_row(3);
 
     $("#copy-to-clipboard").on("click", function() {
         var $copy = $("#form-area").clone().appendTo(document.body);
@@ -131,30 +137,8 @@ $(document).ready(function() {
     });
 
     $("#btn-add-row").click(function(){
-        var tmp_row = $("#tmp-row").html();
-        var tmp_cell = $("#tmp-cell").html();
-
         var col_nr = parseInt($("#edt-col-number").val());
-        var col_wd = 12 / col_nr;
-
-        var class_text = 'col-md-' + col_wd;
-
-        var new_row = $(tmp_row).appendTo($("#form-area"));
-        for (var i = 1; i <= col_nr; i++) {
-            var cell = $(tmp_cell).appendTo(new_row);
-            $(cell).addClass(class_text);
-            $(cell).data("col-no", i);
-            $(cell).data("col-wd", col_wd);
-
-            set_droppbable(cell); //for widgets to be sorted
-        }
-
-        $(new_row).sortable({
-            axis: "x",
-            containment: "parent",
-            tolerance: "pointer"
-        }); //for cells to be sorted
-
+        add_row(col_nr);
         return false;
     });
 
@@ -314,6 +298,51 @@ $(document).ready(function() {
     //Delete Widget
     $("#form-area").on("click", ".close", function (ev) {
         $(this).parent().remove();
+        return false;
+    });
+
+
+    //Get Html
+    $("#btn-get-html").click(function(){
+        var $copy = $("#form-area").clone().appendTo(document.body);
+
+        //remove helper items
+        $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
+
+        //remove css needed for design time positioning
+        $copy.find(".dropped").css({
+            "position": "",
+            "left": "",
+            "right": "",
+            "width": "",
+            "height": "",
+            "z-index": "",
+            "top": ""
+        });
+        //$copy.find(".dropped").removeAttr("style");
+
+
+        //remove design time classes
+        $.each(["draggable", "droppable", "sortable", "dropped",
+            "ui-sortable", "ui-draggable", "ui-droppable", "form-body",
+            "cell", "form-row", "ui-sortable-handle", "ui-sortable-handle",
+            "ui-draggable-handle", "ui-sortable-helper", "dropped-pos-full"
+        ], function(i, c) {
+            $copy.find("." + c).removeClass(c);
+        });
+
+        var html = html_beautify($copy.html(), {
+                'unformatted': [],
+                'preserve_newlines': false,
+                'max_preserve_newlines': 1}
+        );
+        //var html = $copy.html();
+        $copy.remove();
+
+        $("#html-code").text(html);
+        //hljs.highlightBlock($("#html-code"));
+        Prism.highlightAll();
+
         return false;
     });
 
