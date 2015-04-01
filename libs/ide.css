@@ -32,6 +32,10 @@ body {
     background-color: #ffe !important;
 }
 
+.placeholder {
+    background-color: #bce8f1 !important;
+}
+
 .tools a {
     cursor: pointer;
     font-size: 80%; }
@@ -66,6 +70,13 @@ body {
     z-index: 1000;
 }
 
+.row-actions {
+    position: absolute;
+    float: left;
+    left: 5px;
+    z-index: 1000;
+}
+
 
 .active-row {
     border: 1px dotted red;
@@ -76,5 +87,18 @@ body {
 
 }
 
+.dropped-pos-full {
+    position: static;
+    left: auto;
+    right: auto;
+    width: 100%;
+    height: auto;
+}
 
+.dropped-pos {
+    position: static;
+    left: auto;
+    right: auto;
+    height: auto;
+}
 
