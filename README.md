@@ -7,8 +7,18 @@ http://ctengiz.github.io/bootstrap-form-ide/
 
 Heavily inspired from https://github.com/frappe/bootstrap-form-builder
 
-Will going to be a part of web based business application platform.
+This project will be going to be a part of a web based business application platform.
 
 Todo :
 
-- [ ] Make a todo list
+- [x] Make a todo list
+- [ ] HTML output of the form
+- [ ] Json representation of the form
+- [ ] A js renderer for json representation
+- [ ] A py renderer for json representation
+- [ ] Adding child widgets to container widgets (ie tab panel, collapse panel)
+- [ ] Editing raw html of a cell
+- [ ] Property editing of widgets
+- [ ] Row delete
+- [ ] Assign correct id's to dropped widgets
+- [ ] Move this todo to issues
