@@ -19,6 +19,6 @@ Todo :
 - [ ] Adding child widgets to container widgets (ie tab panel, collapse panel)
 - [ ] Editing raw html of a cell
 - [ ] Property editing of widgets
-- [ ] Row delete
+- [x] Row delete
 - [ ] Assign correct id's to dropped widgets
 - [ ] Move this todo to issues

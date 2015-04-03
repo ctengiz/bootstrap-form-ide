@@ -21,9 +21,6 @@ var set_droppbable = function(elm) {
             $(active_row).addClass("active-row");
             */
 
-            /* todo :
-            for labels css width property should not be set
-             */
 
             /* todo :
             widget-container class should accept widgets as children
@@ -33,14 +30,25 @@ var set_droppbable = function(elm) {
             set id for collapsible and tab panel
              */
 
+            /* todo :
+            move button group and toolbar to containers
+             */
+
             var $orig = $(ui.draggable);
-            var clsbtn = '<button type="button" class="close" aria-label="Close" style="float: right;"><span aria-hidden="true">&times;</span></button>';
+            var clsbtn = '<button type="button" class="close remove-widget">&times;</button>';
+
+            var dropped_css = {"position": "static", "left": null, "right": null, "width":"100%", "height":null};
+            if ($orig.hasClass("no-width")) {
+                dropped_css.width = "";
+                dropped_css.display = "inline-block";
+
+            }
 
             if(!$(ui.draggable).hasClass("dropped")) {
                 var $el = $orig
                     .clone()
                     .addClass("dropped")
-                    .css({"position": "static", "left": null, "right": null, "width":"100%", "height":null})
+                    .css(dropped_css)
                     .appendTo(this);
 
                 $(clsbtn).prependTo($el);
@@ -59,7 +67,7 @@ var set_droppbable = function(elm) {
                 if($(this)[0]!=$orig.parent()[0]) {
                     var $el = $orig
                         .clone()
-                        .css({"position": "static", "left": null, "right": null, "width":"100%", "height":null})
+                        .css(dropped_css)
                         .appendTo(this);
                     $orig.remove();
                 }
@@ -74,6 +82,7 @@ var set_draggable = function() {
     $( ".draggable" ).draggable({
         appendTo: "body",
         helper: "clone"
+        //cancel: ""
     });
 };
 
@@ -102,6 +111,47 @@ var add_row = function(col_nr) {
         tolerance: "pointer"
     }); //for cells to be sorted
 
+};
+
+var get_form_elm = function() {
+    var $copy = $("#form-area").clone(); //.appendTo(document.body);
+
+    //remove helper items
+    $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
+
+    //remove css needed for design time positioning
+    $copy.find('.dropped, .col-md-1, .col-md-2, .col-md-3, .col-md-4,' +
+    '.col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,' +
+    '.col-md-10, .col-md-11, .col-md-12, .row').css({
+        "position": "",
+        "left": "",
+        "right": "",
+        "width": "",
+        "height": "",
+        "z-index": "",
+        "top": "",
+        "float": ""
+    });
+
+    //unwrap wrapped elements
+    $copy.find(".unwrap").children().unwrap();
+
+
+    //remove design time classes
+    $.each(["draggable", "droppable", "sortable", "dropped",
+        "ui-sortable", "ui-draggable", "ui-droppable", "form-body",
+        "cell", "form-row", "ui-sortable-handle", "ui-sortable-handle",
+        "ui-draggable-handle", "ui-sortable-helper", "dropped-pos-full",
+        "no-width"
+    ], function(i, c) {
+        $copy.find("." + c).removeClass(c);
+    });
+
+    //remove empty style & class atributes
+    $copy.find('*[class=""]').removeAttr('class');
+    $copy.find('*[style=""]').removeAttr('style');
+
+    return $copy;
 };
 
 
@@ -139,6 +189,11 @@ $(document).ready(function() {
     $("#btn-add-row").click(function(){
         var col_nr = parseInt($("#edt-col-number").val());
         add_row(col_nr);
+        return false;
+    });
+
+    $("#form-area").on("click", ".btn-del-row", function (ev) {
+        $(this).parent().parent().remove();
         return false;
     });
 
@@ -304,47 +359,25 @@ $(document).ready(function() {
 
     //Get Html
     $("#btn-get-html").click(function(){
-        var $copy = $("#form-area").clone().appendTo(document.body);
-
-        //remove helper items
-        $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
-
-        //remove css needed for design time positioning
-        $copy.find(".dropped").css({
-            "position": "",
-            "left": "",
-            "right": "",
-            "width": "",
-            "height": "",
-            "z-index": "",
-            "top": ""
-        });
-        //$copy.find(".dropped").removeAttr("style");
-
-
-        //remove design time classes
-        $.each(["draggable", "droppable", "sortable", "dropped",
-            "ui-sortable", "ui-draggable", "ui-droppable", "form-body",
-            "cell", "form-row", "ui-sortable-handle", "ui-sortable-handle",
-            "ui-draggable-handle", "ui-sortable-helper", "dropped-pos-full"
-        ], function(i, c) {
-            $copy.find("." + c).removeClass(c);
-        });
-
+        var $copy = get_form_elm();
         var html = html_beautify($copy.html(), {
                 'unformatted': [],
                 'preserve_newlines': false,
                 'max_preserve_newlines': 1}
         );
-        //var html = $copy.html();
-        $copy.remove();
 
-        $("#html-code").text(html);
-        //hljs.highlightBlock($("#html-code"));
-        Prism.highlightAll();
+        $("#html-code").html(hljs.highlight("html", html).value);
 
         return false;
     });
+
+
+    //Get Json
+    $("#btn-get-json").click(function(){
+        var $copy = get_form_elm();
+
+
+    })
 
 
 });

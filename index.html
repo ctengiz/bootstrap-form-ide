@@ -16,13 +16,8 @@
     <script src="libs/external/bootstrap/js/bootstrap.min.js"></script>
     <script src="libs/external/beautify-html.js"></script>
 
-    <!--
-    <link rel="stylesheet" href="libs/external/highlight/styles/default.css">
+    <link rel="stylesheet" href="libs/external/highlight/styles/github.css">
     <script src="libs/external/highlight/highlight.pack.js"></script>
-    -->
-
-    <link rel="stylesheet" href="libs/external/prism/prism.css">
-    <script src="libs/external/prism/prism.js"></script>
 
     <link rel="stylesheet" href="libs/ide.css" />
     <script src="libs/ide.js"></script>
@@ -63,6 +58,10 @@
 
         <button class="btn btn-xs btn-success" id="btn-get-html">
             <i class="fa fa-code"></i> Get HTML
+        </button>
+
+        <button class="btn btn-xs btn-warning" id="btn-get-json">
+            <i class="fa fa-bolt"></i> Get JSON
         </button>
 
     </form>
@@ -219,17 +218,14 @@
                                             </div>
 
                                             <label class="control-label">Radiobox</label>
-                                            <div class="draggable">
-                                                <div class="form-group">
+                                                <div class="form-group draggable">
                                                     <div class="radio">
                                                         <label> <input type="radio" value="">Radio</label>
                                                     </div>
                                                 </div>
-                                            </div>
 
                                             <label class="control-label">Inline Radio</label>
-                                            <div class="draggable">
-                                                <div class="form-group">
+                                                <div class="form-group draggable">
                                                     <label class="radio-inline">
                                                         <input type="radio" name="inline_radio" value="">Radio One</label>
                                                     </label>
@@ -237,8 +233,6 @@
                                                         <input type="radio" name="inline_radio" value="">Radio Two</label>
                                                     </label>
                                                 </div>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -254,21 +248,18 @@
                                     </div>
                                     <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                                         <div class="panel-body">
-                                            <div class="draggable">
-                                                <div class="form-group">
-                                                    <label class="control-label">Select</label>
-                                                    <select class="form-control">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </div>
+                                            <div class="form-group draggable">
+                                                <label class="control-label">Select</label>
+                                                <select class="form-control">
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                </select>
                                             </div>
 
-                                            <div class="draggable">
-                                                <div class="form-group">
+                                                <div class="form-group draggable">
                                                     <label class="control-label">Multiple Select</label>
                                                     <select multiple class="form-control">
                                                         <option>1</option>
@@ -278,7 +269,6 @@
                                                         <option>5</option>
                                                     </select>
                                                 </div>
-                                            </div>
 
                                         </div>
                                     </div>
@@ -297,71 +287,27 @@
                                         <div class="panel-body">
 
                                             <label class="control-label">Button</label>
-                                            <div class="draggable">
+                                            <div class="draggable no-width unwrap">
                                                 <button class="btn btn-default">Button</button>
                                             </div>
 
-                                            <label class="control-label">Dropdown</label>
-                                            <div class="draggable">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                                        Dropdown
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                                                        <li role="presentation" class="divider"></li>
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <label class="control-label">Button Group</label>
-                                            <div class="draggable">
-                                                <div class="btn-group" role="group" aria-label="aria label">
-                                                    <button type="button" class="btn btn-default">Left</button>
-                                                    <button type="button" class="btn btn-default">Middle</button>
-                                                    <button type="button" class="btn btn-default">Right</button>
-                                                </div>
-                                            </div>
-
-                                            <label class="control-label">Toolbar</label>
-                                            <div class="draggable">
-                                                <div class="btn-toolbar" role="toolbar" aria-label="toolbar">
-                                                    <div class="btn-group" role="group" aria-label="aria label">
-                                                        <button type="button" class="btn btn-default">1</button>
-                                                        <button type="button" class="btn btn-default">2</button>
-                                                        <button type="button" class="btn btn-default">3</button>
-                                                    </div>
-                                                    <div class="btn-group" role="group" aria-label="aria label">
-                                                        <button type="button" class="btn btn-default">4</button>
-                                                        <button type="button" class="btn btn-default">5</button>
-                                                        <button type="button" class="btn btn-default">6</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
                                             <label class="control-label">Single Button Dropdown</label>
-                                            <div class="draggable">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                        Action <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <li><a href="#">Action</a></li>
-                                                        <li><a href="#">Another action</a></li>
-                                                        <li><a href="#">Something else here</a></li>
-                                                        <li class="divider"></li>
-                                                        <li><a href="#">Separated link</a></li>
-                                                    </ul>
-                                                </div>
+                                            <div class="dropdown draggable">
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                                    Dropdown
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                                                    <li role="presentation" class="divider"></li>
+                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                                                </ul>
                                             </div>
 
                                             <label class="control-label">Split Button Dropdown</label>
-                                            <div class="draggable">
+                                            <div class="draggable no-width unwrap">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default">Action</button>
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -375,6 +321,33 @@
                                                         <li class="divider"></li>
                                                         <li><a href="#">Separated link</a></li>
                                                     </ul>
+                                                </div>
+                                            </div>
+
+                                            <br/>
+                                            <label class="control-label">Button Group</label>
+                                            <div class="draggable no-width unwrap">
+                                                <div class="btn-group" role="group" aria-label="aria label">
+                                                    <button type="button" class="btn btn-default">Left</button>
+                                                    <button type="button" class="btn btn-default">Middle</button>
+                                                    <button type="button" class="btn btn-default">Right</button>
+                                                </div>
+                                            </div>
+
+                                            <label class="control-label">Toolbar</label>
+                                            <div class="draggable no-width unwrap">
+                                                <div class="btn-toolbar" role="toolbar" aria-label="toolbar">
+                                                    <div class="btn-group" role="group" aria-label="aria label">
+                                                        <button type="button" class="btn btn-default">1</button>
+                                                        <button type="button" class="btn btn-default">2</button>
+                                                        <button type="button" class="btn btn-default">3</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group" aria-label="aria label">
+                                                        <button type="button" class="btn btn-default">4</button>
+                                                        <button type="button" class="btn btn-default">5</button>
+                                                        <button type="button" class="btn btn-default">6</button>
+                                                    </div>
+
                                                 </div>
                                             </div>
 
@@ -559,24 +532,23 @@
             </a>
 
             <div class="col-md-9" id="form-container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form>
-                            <div id="form-area">
-                            </div>
-                        </form>
+                <form>
+                    <div id="form-area">
                     </div>
-                </div>
+                </form>
 
+                <!-- TEST SONU -->
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-md-12">
                             <pre>
-<code id="html-code" class="language-markup">
+<code id="html-code">
 </code>
                             </pre>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </div>
 </div>
