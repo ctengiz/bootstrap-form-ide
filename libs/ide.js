@@ -35,7 +35,7 @@ var set_droppbable = function(elm) {
              */
 
             var $orig = $(ui.draggable);
-            var clsbtn = '<button type="button" class="close remove-widget">&times;</button>';
+            var clsbtn = '<button type="button" class="close remove-widget-btn">&times;</button>';
 
             var dropped_css = {"position": "static", "left": null, "right": null, "width":"100%", "height":null};
             if ($orig.hasClass("no-width")) {
@@ -113,11 +113,11 @@ var add_row = function(col_nr) {
 
 };
 
-var get_form_elm = function() {
+var get_form_html = function() {
     var $copy = $("#form-area").clone(); //.appendTo(document.body);
 
     //remove helper items
-    $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
+    $copy.find(".tools, .remove-widget-btn, .cell-actions, .row-actions").remove();
 
     //remove css needed for design time positioning
     $copy.find('.dropped, .col-md-1, .col-md-2, .col-md-3, .col-md-4,' +
@@ -134,7 +134,7 @@ var get_form_elm = function() {
     });
 
     //unwrap wrapped elements
-    $copy.find(".unwrap").children().unwrap();
+    $copy.find(".unwrap .dropped").children().unwrap();
 
 
     //remove design time classes
@@ -359,7 +359,7 @@ $(document).ready(function() {
 
     //Get Html
     $("#btn-get-html").click(function(){
-        var $copy = get_form_elm();
+        var $copy = get_form_html();
         var html = html_beautify($copy.html(), {
                 'unformatted': [],
                 'preserve_newlines': false,
@@ -374,9 +374,49 @@ $(document).ready(function() {
 
     //Get Json
     $("#btn-get-json").click(function(){
-        var $copy = get_form_elm();
+        var $copy = $("#form-area").clone(true); //.appendTo(document.body);
+
+        //remove helper items
+        $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
+
+        var jsonStr = {
+            widgets: [],
+            layout: {
+                rows: []
+            }
+        };
+
+        var frmRow = $copy.children();
+        var rowCount = frmRow.length;
+        for (var r = 0; r < rowCount; r++) {
+            var jsonRow = [];
+
+            var frmCells = $(frmRow[r]).children();
+            var cellCount = frmCells.length;
+            for (var c = 0; c < cellCount; c++) {
+                var jsonCell = {};
+
+                var fc = frmCells[c];
+                jsonCell.col_wd = $(fc).data("col-wd");
+
+                var widgetCount = fc.length;
+                for (var w=0; w < widgetCount; w++) {
+                    var jsonWidget = {};
+
+                }
 
 
+                jsonRow.push(jsonCell);
+
+            }
+
+            jsonStr.layout.rows.push(jsonRow)
+        }
+
+        $("#html-code").html(hljs.highlight("json", JSON.stringify(jsonStr, null, 2)).value);
+
+
+        return false;
     })
 
 

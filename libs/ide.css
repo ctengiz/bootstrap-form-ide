@@ -60,6 +60,7 @@ body {
 
 .draggable {
     cursor: move;
+    /*border: 1px dotted lightcoral;*/
 }
 
 .cell-actions {
@@ -76,7 +77,7 @@ body {
     z-index: 1000;
 }
 
-.remove-widget {
+.remove-widget-btn {
     position: relative;
     float: right;
     z-index: 1000;
