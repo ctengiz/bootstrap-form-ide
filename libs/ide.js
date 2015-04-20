@@ -6,6 +6,7 @@
 
 var active_row;
 var side_bar_visible = true;
+var idc = 0;
 
 var set_droppbable = function(elm) {
     $(elm).droppable({
@@ -357,6 +358,18 @@ $(document).ready(function() {
     });
 
 
+    //Hover Widget
+    /*
+    $("#form-area").on("mouseover", ".draggable", function (ev) {
+        $(this).addClass("draggable-hover");
+    });
+    $("#form-area").on("mouseout", ".draggable", function (ev) {
+        $(this).removeClass("draggable-hover");
+    });
+    */
+
+
+
     //Get Html
     $("#btn-get-html").click(function(){
         var $copy = get_form_html();
@@ -395,17 +408,35 @@ $(document).ready(function() {
             var cellCount = frmCells.length;
             for (var c = 0; c < cellCount; c++) {
                 var jsonCell = {};
-
                 var fc = frmCells[c];
-                jsonCell.col_wd = $(fc).data("col-wd");
 
-                var widgetCount = fc.length;
+                jsonCell.col_wd = $(fc).data("col-wd");
+                jsonCell.widgets = [];
+
+                var widgets = $(fc).children(".draggable");
+                var widgetCount = widgets.length;
                 for (var w=0; w < widgetCount; w++) {
+
                     var jsonWidget = {};
+                    var widget = widgets[w];
+
+                    jsonWidget.widget = $(widget).data("widget");
+                    //@todo placeholder for properties
+                    //@todo should find a smarter way to parse all data properties
+                    jsonWidget.label = "";
+                    jsonWidget.name = "";
+                    jsonWidget.validation = "";
+                    jsonWidget.validation_state = "";
+                    jsonWidget.default = "";
+                    jsonWidget.input_mask = "";
+                    jsonWidget.placeholder = "";
+                    jsonWidget.readonly = "";
+                    jsonWidget.disabled = "";
+                    jsonWidget.size_class = ""; //@todo : input-lg - input-sm
+
+                    jsonCell.widgets.push(jsonWidget);
 
                 }
-
-
                 jsonRow.push(jsonCell);
 
             }

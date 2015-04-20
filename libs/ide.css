@@ -93,4 +93,15 @@ body {
 
 }
 
+#form-area .draggable {
+    padding: 1px;
+    border: 1px dashed transparent;
+    border-radius: 3px;
+}
+
+#form-area .draggable:hover {
+    border: 1px dashed #ddd;
+    border-radius: 3px;
+}
+
 
