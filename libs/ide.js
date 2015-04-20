@@ -6,6 +6,8 @@
 
 var active_row;
 var side_bar_visible = true;
+var idc = 0;
+var $active_widget = null;
 
 var set_droppbable = function(elm) {
     $(elm).droppable({
@@ -21,9 +23,6 @@ var set_droppbable = function(elm) {
             $(active_row).addClass("active-row");
             */
 
-            /* todo :
-            for labels css width property should not be set
-             */
 
             /* todo :
             widget-container class should accept widgets as children
@@ -33,33 +32,38 @@ var set_droppbable = function(elm) {
             set id for collapsible and tab panel
              */
 
+            /* todo :
+            move button group and toolbar to containers
+             */
+
             var $orig = $(ui.draggable);
-            var clsbtn = '<button type="button" class="close" aria-label="Close" style="float: right;"><span aria-hidden="true">&times;</span></button>';
+            var clsbtn = '<button type="button" class="close remove-widget-btn">&times;</button>';
+
+            var dropped_css = {"position": "static", "left": null, "right": null, "width":"100%", "height":null};
+            if ($orig.hasClass("no-width")) {
+                dropped_css.width = "";
+                dropped_css.display = "inline-block";
+
+            }
 
             if(!$(ui.draggable).hasClass("dropped")) {
                 var $el = $orig
                     .clone()
                     .addClass("dropped")
-                    .css({"position": "static", "left": null, "right": null, "width":"100%", "height":null})
+                    .css(dropped_css)
                     .appendTo(this);
 
                 $(clsbtn).prependTo($el);
 
                 // update id
-                var id = $orig.find(":input").attr("id");
+                var id = ++idc;
+                $el.attr("id", "w" + id);
 
-                if(id) {
-                    id = id.split("-").slice(0,-1).join("-") + "-"
-                    + (parseInt(id.split("-").slice(-1)[0]) + 1)
-
-                    $orig.find(":input").attr("id", id);
-                    $orig.find("label").attr("for", id);
-                }
             } else {
                 if($(this)[0]!=$orig.parent()[0]) {
                     var $el = $orig
                         .clone()
-                        .css({"position": "static", "left": null, "right": null, "width":"100%", "height":null})
+                        .css(dropped_css)
                         .appendTo(this);
                     $orig.remove();
                 }
@@ -74,6 +78,7 @@ var set_draggable = function() {
     $( ".draggable" ).draggable({
         appendTo: "body",
         helper: "clone"
+        //cancel: ""
     });
 };
 
@@ -104,7 +109,58 @@ var add_row = function(col_nr) {
 
 };
 
+var get_form_html = function() {
+    var $copy = $("#form-area").clone(); //.appendTo(document.body);
 
+    //remove helper items
+    $copy.find(".tools, .remove-widget-btn, .cell-actions, .row-actions").remove();
+
+    //remove css needed for design time positioning
+    $copy.find('.dropped, .col-md-1, .col-md-2, .col-md-3, .col-md-4,' +
+    '.col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,' +
+    '.col-md-10, .col-md-11, .col-md-12, .row').css({
+        "position": "",
+        "left": "",
+        "right": "",
+        "width": "",
+        "height": "",
+        "z-index": "",
+        "top": "",
+        "float": ""
+    });
+
+    //unwrap wrapped elements
+    $copy.find(".unwrap .dropped").children().unwrap();
+
+
+    //remove design time classes
+    $.each(["draggable", "droppable", "sortable", "dropped",
+        "ui-sortable", "ui-draggable", "ui-droppable", "form-body",
+        "cell", "form-row", "ui-sortable-handle", "ui-sortable-handle",
+        "ui-draggable-handle", "ui-sortable-helper", "dropped-pos-full",
+        "no-width", "active-widget"
+    ], function(i, c) {
+        $copy.find("." + c).removeClass(c);
+    });
+
+    //remove empty style & class atributes
+    $copy.find('*[class=""]').removeAttr('class');
+    $copy.find('*[style=""]').removeAttr('style');
+
+    return $copy;
+};
+
+var active_widget_set = function(aw) {
+    $active_widget = aw;
+    $active_widget.addClass("active-widget");
+};
+
+var active_widget_clear = function () {
+    if ($active_widget) {
+        $active_widget.removeClass("active-widget");
+    }
+    $active_widget = null;
+};
 
 $(document).ready(function() {
     $("#form-area").sortable({
@@ -142,6 +198,10 @@ $(document).ready(function() {
         return false;
     });
 
+    $("#form-area").on("click", ".btn-del-row", function (ev) {
+        $(this).parent().parent().remove();
+        return false;
+    });
 
     $("#form-area").on("mouseover", ".row", function(el){
         $(this).children(".row-actions").show();
@@ -302,49 +362,91 @@ $(document).ready(function() {
     });
 
 
+    //Activate Widget
+    $("#form-area").on("click", ".draggable", function (ev) {
+        active_widget_clear();
+        active_widget_set($(this));
+    });
+
     //Get Html
     $("#btn-get-html").click(function(){
-        var $copy = $("#form-area").clone().appendTo(document.body);
-
-        //remove helper items
-        $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
-
-        //remove css needed for design time positioning
-        $copy.find(".dropped").css({
-            "position": "",
-            "left": "",
-            "right": "",
-            "width": "",
-            "height": "",
-            "z-index": "",
-            "top": ""
-        });
-        //$copy.find(".dropped").removeAttr("style");
-
-
-        //remove design time classes
-        $.each(["draggable", "droppable", "sortable", "dropped",
-            "ui-sortable", "ui-draggable", "ui-droppable", "form-body",
-            "cell", "form-row", "ui-sortable-handle", "ui-sortable-handle",
-            "ui-draggable-handle", "ui-sortable-helper", "dropped-pos-full"
-        ], function(i, c) {
-            $copy.find("." + c).removeClass(c);
-        });
-
+        var $copy = get_form_html();
         var html = html_beautify($copy.html(), {
                 'unformatted': [],
                 'preserve_newlines': false,
                 'max_preserve_newlines': 1}
         );
-        //var html = $copy.html();
-        $copy.remove();
 
-        $("#html-code").text(html);
-        //hljs.highlightBlock($("#html-code"));
-        Prism.highlightAll();
+        $("#html-code").html(hljs.highlight("html", html).value);
 
         return false;
     });
+
+
+    //Get Json
+    $("#btn-get-json").click(function(){
+        var $copy = $("#form-area").clone(true); //.appendTo(document.body);
+
+        //remove helper items
+        $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
+
+        var jsonStr = {
+            widgets: [],
+            layout: {
+                rows: []
+            }
+        };
+
+        var frmRow = $copy.children();
+        var rowCount = frmRow.length;
+        for (var r = 0; r < rowCount; r++) {
+            var jsonRow = [];
+
+            var frmCells = $(frmRow[r]).children();
+            var cellCount = frmCells.length;
+            for (var c = 0; c < cellCount; c++) {
+                var jsonCell = {};
+                var fc = frmCells[c];
+
+                jsonCell.col_wd = $(fc).data("col-wd");
+                jsonCell.widgets = [];
+
+                var widgets = $(fc).children(".draggable");
+                var widgetCount = widgets.length;
+                for (var w=0; w < widgetCount; w++) {
+
+                    var jsonWidget = {};
+                    var widget = widgets[w];
+
+                    jsonWidget.widget = $(widget).data("widget");
+                    //@todo placeholder for properties
+                    //@todo should find a smarter way to parse all data properties
+                    jsonWidget.label = "";
+                    jsonWidget.name = "";
+                    jsonWidget.validation = "";
+                    jsonWidget.validation_state = "";
+                    jsonWidget.default = "";
+                    jsonWidget.input_mask = "";
+                    jsonWidget.placeholder = "";
+                    jsonWidget.readonly = "";
+                    jsonWidget.disabled = "";
+                    jsonWidget.size_class = ""; //@todo : input-lg - input-sm
+
+                    jsonCell.widgets.push(jsonWidget);
+
+                }
+                jsonRow.push(jsonCell);
+
+            }
+
+            jsonStr.layout.rows.push(jsonRow)
+        }
+
+        $("#html-code").html(hljs.highlight("json", JSON.stringify(jsonStr, null, 2)).value);
+
+
+        return false;
+    })
 
 
 });
