@@ -38,5 +38,3 @@ Todo :
 - [ ] Move this todo to issues
 
 
-Her ay sonunda Faaliyet raporu tamamlandıktan sonra ‘’Variable Cost (Invigo’da seferlerin altında olan kalemler dışındaki toplam)’’ / Fix Cost / Direct Overhead rakamları Invigo’daki bir bölüme girilecek ve Invigo bunları Km.ik / zaman bazlı seferlerin altına dağıtacak. Bu verilerin toplamı (her seferin altında 3 kalemi de ayrı ayrı ve toplam olarak görebilmeliyiz) Hat kodu dahilinde belirlenmiş olan toplam beklenen trucking gider ile bir kıyas verisi olarak yer alacak.
-(bu kısımdaki maliyet dağıtımlarını kısmen yaptık arkada dağıtım anahtarlarına süre de eklenerek testi yapılmalı)   
