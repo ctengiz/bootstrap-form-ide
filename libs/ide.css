@@ -100,8 +100,15 @@ body {
 }
 
 #form-area .draggable:hover {
-    border: 1px dashed #ddd;
+    border: 1px dashed #0048ab;
     border-radius: 3px;
+}
+
+#form-area .draggable.active-widget {
+    padding: 1px;
+    border: 1px solid #D9E1E3;;
+    border-radius: 3px;
+    background-color: #ECF0F1;
 }
 
 

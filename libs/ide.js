@@ -7,6 +7,7 @@
 var active_row;
 var side_bar_visible = true;
 var idc = 0;
+var $active_widget = null;
 
 var set_droppbable = function(elm) {
     $(elm).droppable({
@@ -55,15 +56,9 @@ var set_droppbable = function(elm) {
                 $(clsbtn).prependTo($el);
 
                 // update id
-                var id = $orig.find(":input").attr("id");
+                var id = ++idc;
+                $el.attr("id", "w" + id);
 
-                if(id) {
-                    id = id.split("-").slice(0,-1).join("-") + "-"
-                    + (parseInt(id.split("-").slice(-1)[0]) + 1)
-
-                    $orig.find(":input").attr("id", id);
-                    $orig.find("label").attr("for", id);
-                }
             } else {
                 if($(this)[0]!=$orig.parent()[0]) {
                     var $el = $orig
@@ -143,7 +138,7 @@ var get_form_html = function() {
         "ui-sortable", "ui-draggable", "ui-droppable", "form-body",
         "cell", "form-row", "ui-sortable-handle", "ui-sortable-handle",
         "ui-draggable-handle", "ui-sortable-helper", "dropped-pos-full",
-        "no-width"
+        "no-width", "active-widget"
     ], function(i, c) {
         $copy.find("." + c).removeClass(c);
     });
@@ -155,7 +150,17 @@ var get_form_html = function() {
     return $copy;
 };
 
+var active_widget_set = function(aw) {
+    $active_widget = aw;
+    $active_widget.addClass("active-widget");
+};
 
+var active_widget_clear = function () {
+    if ($active_widget) {
+        $active_widget.removeClass("active-widget");
+    }
+    $active_widget = null;
+};
 
 $(document).ready(function() {
     $("#form-area").sortable({
@@ -197,7 +202,6 @@ $(document).ready(function() {
         $(this).parent().parent().remove();
         return false;
     });
-
 
     $("#form-area").on("mouseover", ".row", function(el){
         $(this).children(".row-actions").show();
@@ -358,17 +362,11 @@ $(document).ready(function() {
     });
 
 
-    //Hover Widget
-    /*
-    $("#form-area").on("mouseover", ".draggable", function (ev) {
-        $(this).addClass("draggable-hover");
+    //Activate Widget
+    $("#form-area").on("click", ".draggable", function (ev) {
+        active_widget_clear();
+        active_widget_set($(this));
     });
-    $("#form-area").on("mouseout", ".draggable", function (ev) {
-        $(this).removeClass("draggable-hover");
-    });
-    */
-
-
 
     //Get Html
     $("#btn-get-html").click(function(){
