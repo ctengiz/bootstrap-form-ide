@@ -1,114 +1,168 @@
 body {
-    background-color: #ddd;
+  font-size: .875rem;
 }
 
-#widgets{
-    padding: 0px 30px 30px 30px;
-    background-color: #fff;
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
 }
 
-#toggle-sidebar {
-    color:slategrey;
-    padding:1px 2px;
-    float: left;
-    position: relative;
-    z-index: 10;
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-#form-container {
-    padding-top: 5px;
-    margin-top: -25px;
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  /*overflow-x: hidden;*/
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
-#form-area {
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 5px 20px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    min-height: 100px;
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
 }
 
-.droppable-active {
-    background-color: #ffe !important;
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
 }
 
-.placeholder {
-    background-color: #bce8f1 !important;
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
 }
 
-.tools a {
-    cursor: pointer;
-    font-size: 80%; }
+.sidebar .nav-link.active {
+  color: #007bff;
+}
 
-#form-area .col-md-12,
-#form-area .col-md-11,
-#form-area .col-md-10,
-#form-area .col-md-9,
-#form-area .col-md-8,
-#form-area .col-md-7,
-#form-area .col-md-6,
-#form-area .col-md-5,
-#form-area .col-md-4,
-#form-area .col-md-3,
-#form-area .col-md-2,
-#form-area .col-md-1
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Content
+ */
+
+[role="main"] {
+  padding-top: 133px; /* Space for fixed navbar */
+}
+
+@media (min-width: 768px) {
+  [role="main"] {
+    padding-top: 48px; /* Space for fixed navbar */
+  }
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+/*
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+*/
+
+.bg-silver {
+background-color: silver;
+}
+
+.component
 {
-    min-height: 40px;
-    border: 1px dotted lightgray;
-    border-collapse: collapse;
-}
-
-.draggable {
+    background: transparent; 
+    font-size:12px;
+    padding: 3px;
+    border: 1px solid none;
     cursor: move;
-    /*border: 1px dotted lightcoral;*/
+    border: 1px solid transparent;
+    border-radius: 2.5px 2.5px 2.5px 2.5px;
+    color: #525C66;
+    transition-duration: 150ms;
+    transition-property: background-color, border-color, box-shadow;
+    white-space: normal;
 }
 
-.cell-actions {
-    position: absolute;
-    bottom: -20px;
-    left: 2px;
-    z-index: 1000;
+.component img
+{
+    vertical-align: middle;
+    padding-right: 5px;
 }
 
-.row-actions {
-    position: absolute;
-    float: left;
-    left: 5px;
-    z-index: 1000;
+.dropped {
+  border: 1px solid transparent;
+  padding: 5px;
 }
 
-.remove-widget-btn {
-    position: relative;
-    float: right;
-    z-index: 1000;
-    left: -13px;
+.dropped:hover {
+    border: 1px solid #ddd !important;
+    background-color: rgba(3, 14, 27, 0.03);
 }
 
-.active-row {
-    border: 1px dotted red;
+.over {
+  border: 2px dotted #0048ab !important;
+  /*background-color: #ffe !important;*/
+}
+
+.drop-target {
+  border: 1px dotted #ddd;
+  border-collapse: collapse;
+  min-height: 38px;
+}
+
+.handle {
+  cursor: move;
 }
 
 
-.widget-container {
-
+.ui-draggable-handle {
+	-ms-touch-action: none;
+	touch-action: none;
 }
-
-#form-area .draggable {
-    padding: 1px;
-    border: 1px dashed transparent;
-    border-radius: 3px;
+.ui-sortable-handle {
+	-ms-touch-action: none;
+	touch-action: none;
 }
-
-#form-area .draggable:hover {
-    border: 1px dashed #0048ab;
-    border-radius: 3px;
-}
-
-#form-area .draggable.active-widget {
-    padding: 1px;
-    border: 1px solid #D9E1E3;;
-    border-radius: 3px;
-    background-color: #ECF0F1;
-}
-
 

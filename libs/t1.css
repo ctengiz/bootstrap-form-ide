@@ -1,0 +1,17 @@
+.drop-target {
+    min-height: 40px;
+    border: 1px dotted lightgray;
+    border-collapse: collapse;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.component {
+    cursor: move;
+    border: 1px solid #ddd;
+    z-index: 1000;
+}
+
+.dropped {
+    border: 1px solid darkorchid;
+}

@@ -1,452 +1,340 @@
-/**
- * Created by cagataytengiz on 23.03.15.
- */
+/*
+var dragPos = {
+    X:0,
+    Y:0
+};
 
-/* todo : show / hide cell markers */
+class ComponentData {
+    constructor () {
+        this.id = "";
+        this.template = "";
+        this.isContainer = false;
+        this.isAdded = false;
+        this.currentParent = null;
+        this.el = null;
 
-var active_row;
-var side_bar_visible = true;
-var idc = 0;
-var $active_widget = null;
+    };
 
-var set_droppbable = function(elm) {
-    $(elm).droppable({
-        accept: ".draggable",
-        helper: "clone",
-        hoverClass: "droppable-active",
-        drop: function( event, ui ) {
+    reset() {
+        this.id = "";
+        this.template = "";
+        this.isContainer = false;
+        this.isAdded = false;
+        this.currentParent = null;
+        this.el = null;
 
-            /* todo
-            //Make dropped row as active row
-            $(".form-row").removeClass("active-row");
-            active_row = $(this).parent();
-            $(active_row).addClass("active-row");
-            */
+    };
+
+    beginDrag(id, template) {
+        this.id = id;
+        this.template = template;
+    }
+
+    removeDragged() {
+        if (this.currentParent) {
+            this.currentParent.removeChild(document.getElementById(this.id));
+        };
+        this.currentParent = null;
+        this.isAdded = false;
+        this.el = null;
+    };
+
+    addDragged(target) {
+        target.insertAdjacentHTML("beforeend", this.template);
+        this.isAdded = true;
+        this.currentParent = target;
+        this.el = document.getElementById(this.id);
+
+    };
+
+    dropped() {
+        if (!this.el) {
+            this.el = document.getElementById(this.id);
+        }
+
+        if (this.el) {
+            this.el.classList.add("placed");
+            this.el.classList.add("draggable");
+
+            this.el.classList.remove("hoverComponent");
+            this.el.addEventListener('dragenter', handleDragEnter, false);
+            this.el.addEventListener('dragover', handleDragOver, false);
+            this.el.addEventListener('dragleave', handleDragLeave, false);
+
+            this.el.addEventListener('dragstart', handleDragStart, false);
+            this.el.addEventListener('dragend', handleDragEnd, false);
+
+            this.el.parentNode.classList.remove("over");
+        }
+
+    }
+}
+
+let componentData = new ComponentData();
+
+var comps = document.querySelectorAll('#widgetTabContent .component');
+[].forEach.call(comps, function (comp) {
+    comp.addEventListener('dragstart', handleDragStart, false);
+    comp.addEventListener('dragend', handleDragEnd, false);
+    //comp.addEventListener('drop', handleDrop, false);
+});
+
+var targets = document.querySelectorAll("#form-area .drop-target");
+[].forEach.call(targets, function (target) {
+    target.addEventListener('dragenter', handleDragEnter, false);
+    target.addEventListener('dragover', handleDragOver, false);
+    target.addEventListener('dragleave', handleDragLeave, false);
+
+    target.addEventListener('drop', handleDrop, false);
+});
+
+function handleDragStart(e) {
+
+    if (e.target.classList.contains("component")) {
+        idCount = idCount + 1;
+        var renderData = {
+            id: "comp" + idCount.toString(),
+            idControl: "control" + idCount.toString(),
+            idControlHelp: "controlHelp" + idCount.toString()
+        };
+        var tempx = Mustache.render(
+            document.getElementById("t-textbox").innerHTML,
+            renderData
+        )
+
+        componentData.beginDrag("comp" + idCount.toString(), tempx);
+
+    } else {
+        componentData.id = e.target.id;
+        componentData.template = e.target.outerHTML;
+        componentData.isAdded = true;
+        componentData.el = e.target;
+        componentData.currentParent = e.target.parentNode;
+    }
+
+    e.dataTransfer.dropEffect = "move";
+}
 
 
-            /* todo :
-            widget-container class should accept widgets as children
-             */
+function handleDragEnter(e) {
+    if (componentData.id != "") {
+        if (e.target.classList.contains("drop-target")) {
 
-            /* todo :
-            set id for collapsible and tab panel
-             */
-
-            /* todo :
-            move button group and toolbar to containers
-             */
-
-            var $orig = $(ui.draggable);
-            var clsbtn = '<button type="button" class="close remove-widget-btn">&times;</button>';
-
-            var dropped_css = {"position": "static", "left": null, "right": null, "width":"100%", "height":null};
-            if ($orig.hasClass("no-width")) {
-                dropped_css.width = "";
-                dropped_css.display = "inline-block";
-
-            }
-
-            if(!$(ui.draggable).hasClass("dropped")) {
-                var $el = $orig
-                    .clone()
-                    .addClass("dropped")
-                    .css(dropped_css)
-                    .appendTo(this);
-
-                $(clsbtn).prependTo($el);
-
-                // update id
-                var id = ++idc;
-                $el.attr("id", "w" + id);
-
+            if (!componentData.isAdded) {
+                componentData.addDragged(e.target);
             } else {
-                if($(this)[0]!=$orig.parent()[0]) {
-                    var $el = $orig
-                        .clone()
-                        .css(dropped_css)
-                        .appendTo(this);
-                    $orig.remove();
+                if (componentData.currentParent != e.target) {
+                    componentData.el.parentElement = e.target;
+                    componentData.currentParent = e.target;
+                    
+                    //componentData.removeDragged();
+                    //componentData.addDragged(e.target);
                 }
             }
-        }
-    });
+            
+            e.target.classList.add('over');
+            e.preventDefault();
 
-    $(elm).sortable();
-};
-
-var set_draggable = function() {
-    $( ".draggable" ).draggable({
-        appendTo: "body",
-        helper: "clone"
-        //cancel: ""
-    });
-};
-
-
-var add_row = function(col_nr) {
-    var tmp_row = $("#tmp-row").html();
-    var tmp_cell = $("#tmp-cell").html();
-
-    var col_wd = 12 / col_nr;
-
-    var class_text = 'col-md-' + col_wd;
-
-    var new_row = $(tmp_row).appendTo($("#form-area"));
-    for (var i = 1; i <= col_nr; i++) {
-        var cell = $(tmp_cell).appendTo(new_row);
-        $(cell).addClass(class_text);
-        $(cell).data("col-no", i);
-        $(cell).data("col-wd", col_wd);
-
-        set_droppbable(cell); //for widgets to be sorted
-    }
-
-    $(new_row).sortable({
-        axis: "x",
-        containment: "parent",
-        tolerance: "pointer"
-    }); //for cells to be sorted
-
-};
-
-var get_form_html = function() {
-    var $copy = $("#form-area").clone(); //.appendTo(document.body);
-
-    //remove helper items
-    $copy.find(".tools, .remove-widget-btn, .cell-actions, .row-actions").remove();
-
-    //remove css needed for design time positioning
-    $copy.find('.dropped, .col-md-1, .col-md-2, .col-md-3, .col-md-4,' +
-    '.col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,' +
-    '.col-md-10, .col-md-11, .col-md-12, .row').css({
-        "position": "",
-        "left": "",
-        "right": "",
-        "width": "",
-        "height": "",
-        "z-index": "",
-        "top": "",
-        "float": ""
-    });
-
-    //unwrap wrapped elements
-    $copy.find(".unwrap .dropped").children().unwrap();
-
-
-    //remove design time classes
-    $.each(["draggable", "droppable", "sortable", "dropped",
-        "ui-sortable", "ui-draggable", "ui-droppable", "form-body",
-        "cell", "form-row", "ui-sortable-handle", "ui-sortable-handle",
-        "ui-draggable-handle", "ui-sortable-helper", "dropped-pos-full",
-        "no-width", "active-widget"
-    ], function(i, c) {
-        $copy.find("." + c).removeClass(c);
-    });
-
-    //remove empty style & class atributes
-    $copy.find('*[class=""]').removeAttr('class');
-    $copy.find('*[style=""]').removeAttr('style');
-
-    return $copy;
-};
-
-var active_widget_set = function(aw) {
-    $active_widget = aw;
-    $active_widget.addClass("active-widget");
-};
-
-var active_widget_clear = function () {
-    if ($active_widget) {
-        $active_widget.removeClass("active-widget");
-    }
-    $active_widget = null;
-};
-
-$(document).ready(function() {
-    $("#form-area").sortable({
-        handle: ".btn-move-row",
-        cancel: "",
-        axis: "y",
-        containment: "parent",
-        tolerance: "pointer"
-    });
-
-    set_draggable();
-    add_row(3);
-
-    $("#copy-to-clipboard").on("click", function() {
-        var $copy = $("#form-area").clone().appendTo(document.body);
-        $copy.find(".tools, :hidden").remove();
-        $.each(["draggable", "droppable", "sortable", "dropped",
-            "ui-sortable", "ui-draggable", "ui-droppable", "form-body"], function(i, c) {
-            $copy.find("." + c).removeClass(c);
-        });
-        var html = html_beautify($copy.html());
-        $copy.remove();
-
-        $modal = get_modal(html).modal("show");
-        $modal.find(".btn").remove();
-        $modal.find(".modal-title").html("Copy HTML");
-        $modal.find(":input:first").select().focus();
-
-        return false;
-    });
-
-    $("#btn-add-row").click(function(){
-        var col_nr = parseInt($("#edt-col-number").val());
-        add_row(col_nr);
-        return false;
-    });
-
-    $("#form-area").on("click", ".btn-del-row", function (ev) {
-        $(this).parent().parent().remove();
-        return false;
-    });
-
-    $("#form-area").on("mouseover", ".row", function(el){
-        $(this).children(".row-actions").show();
-    });
-
-    $("#form-area").on("mouseout", ".row", function(el){
-        $(this).children(".row-actions").hide();
-    });
-
-
-    $("#form-area").on("mouseover", ".cell", function(el){
-        $(this).children(".cell-actions").show();
-        //return false; --> Özellikle kapattım...
-    });
-
-    $("#form-area").on("mouseout", ".cell", function(el){
-        $(this).children(".cell-actions").hide();
-        //return false; --> Özellikle kapattım. Row mouse-out tetiklenmiyor..
-    });
-
-
-    //Expand or Shrink Cell
-    $("#form-area").on("click", ".btn-size-cell", function (ev) {
-        var size = parseInt($(this).data('size'));
-
-        var parent_div = $(this).parent().parent();
-        var parent_col_wd = parseInt($(parent_div).data("col-wd"));
-
-        var target_div = $(parent_div).next();
-        var target_col_no = $(target_div).data("col-no");
-        var target_col_wd = parseInt($(target_div).data("col-wd"));
-
-        if (!target_col_no) {
-            target_div = $(parent_div).prev();
-            target_col_no = $(target_div).data("col-no");
-            target_col_wd = parseInt($(target_div).data("col-wd"));
-
-            size = size * -1;
-        }
-
-        if (target_col_no) {
-            if ( ((target_col_wd - size) > 0) && ((parent_col_wd + size) > 0))  {
-                target_div.removeClass("col-md-" + target_col_wd);
-                target_div.addClass("col-md-" + (target_col_wd - size));
-                target_div.data("col-wd", (target_col_wd - size));
-
-                parent_div.removeClass("col-md-" + parent_col_wd);
-                parent_div.addClass("col-md-" + (parent_col_wd + size));
-                parent_div.data("col-wd", (parent_col_wd + size));
-            } else {
-                alert("No more space to expand or shrink! Delete target cell explicitly!");
-            }
-        }
-        return false;
-    });
-
-
-    //Split Cell
-    $("#form-area").on("click", ".btn-split-cell", function (ev) {
-        var parent_div = $(this).parent().parent();
-        var parent_col_wd = parseInt($(parent_div).data("col-wd"));
-
-        if (parent_col_wd < 1) {
-            alert ("This cell is can not be splitted anymore.");
             return false;
         }
+    }
+}
 
-        if (parent_col_wd % 2 === 0) {
-            var size = parent_col_wd / 2;
-        } else {
-            var size = 1;
-        }
+function handleDragLeave(e) {
+    if (e.target.classList.contains("drop-target")) {
+        e.target.classList.remove('over');
+    }
 
-        var tmp_cell = $("#tmp-cell").html();
+    //componentData.removeDragged();
+}
 
-        var target_div = $(tmp_cell).insertAfter(parent_div);
-        target_div.addClass("col-md-" + size);
-        target_div.data("col-wd", size);
-        target_div.data("col-no", 1);
-        set_droppbable(target_div);
+function handleDrop(e) {
+    console.log("dropped");
 
-        parent_div.removeClass("col-md-" + parent_col_wd);
-        parent_div.addClass("col-md-" + (parent_col_wd - size));
-        parent_div.data("col-wd", (parent_col_wd - size));
+    // this / e.target is current target element.
+    if (e.stopPropagation) {
+        e.stopPropagation(); // stops the browser from redirecting.
 
-        return false;
-    });
+    }
+    //componentData.reset();
 
+    // See the section on the DataTransfer object.
+    return false;
+}
 
-    //Delete cell
-    $("#form-area").on("click", ".btn-del-cell", function (ev) {
+function handleDragEnd(e) {
+    // this/e.target is the source node.
+    if (e.dataTransfer.dropEffect === "move") {
+        componentData.dropped();
+    } else {
+        componentData.removeDragged();
+    }
 
-        var parent_div = $(this).parent().parent();
-        var parent_col_wd = parseInt($(parent_div).data("col-wd"));
+    componentData.reset();
+}
 
-        var target_div = $(parent_div).prev();
-        var target_col_no = $(target_div).data("col-no");
-        var target_col_wd = parseInt($(target_div).data("col-wd"));
+function handleDragOver(e) {
+    if (e.target.classList.contains("drop-target")) {
 
-        if (!target_col_no) {
-            target_div = $(parent_div).next();
-            target_col_no = $(target_div).data("col-no");
-            target_col_wd = parseInt($(target_div).data("col-wd"));
-        }
+        //Drop'a izin verelim
+        e.preventDefault();
 
-        if (target_col_no) {
-            target_div.removeClass("col-md-" + target_col_wd);
-            target_div.addClass("col-md-" + (target_col_wd + parent_col_wd));
-            target_div.data("col-wd", (target_col_wd + parent_col_wd));
-        }
-
-        $(parent_div).remove();
-
-        return false;
-    });
-
-    /* todo !
-    $("#form-area").on("click", ".cell", function(elm) {
-        var row = $(this).parent();
-        if (!$(row).hasClass("active-row")) {
-            $(".form-row").removeClass("active-row");
-            $(row).addClass("active-row");
-            active_row = row;
-        } else {
-            $(row).removeClass("active-row");
-            active_row = null;
-        }
-        return false;
-    });
-    */
-
-    $("#toggle-sidebar").click(function(){
-        if (side_bar_visible) {
-            $("#widgets").hide();
-            $("#form-container").removeClass("col-md-9");
-            $("#form-container").addClass("col-md-12");
-            side_bar_visible = false;
-
-            $(this).children("i").addClass('fa-chevron-right');
-            $(this).children("i").removeClass('fa-chevron-left');
-
-        } else {
-            $("#widgets").show();
-            $("#form-container").removeClass("col-md-12");
-            $("#form-container").addClass("col-md-9");
-            side_bar_visible = true;
-
-            $(this).children("i").addClass('fa-chevron-left');
-            $(this).children("i").removeClass('fa-chevron-right');
-
-        }
-    });
-
-    //Delete Widget
-    $("#form-area").on("click", ".close", function (ev) {
-        $(this).parent().remove();
-        return false;
-    });
-
-
-    //Activate Widget
-    $("#form-area").on("click", ".draggable", function (ev) {
-        active_widget_clear();
-        active_widget_set($(this));
-    });
-
-    //Get Html
-    $("#btn-get-html").click(function(){
-        var $copy = get_form_html();
-        var html = html_beautify($copy.html(), {
-                'unformatted': [],
-                'preserve_newlines': false,
-                'max_preserve_newlines': 1}
-        );
-
-        $("#html-code").html(hljs.highlight("html", html).value);
+        //e = e || window.event;
+        dragPos.X = e.pageX;
+        dragPos.Y = e.pageY;
 
         return false;
-    });
+    }
+}
+*/
 
+var idCount = 0;
+var componentData = {
+    id: "",
+    html: "",
+    dropTarget: false,
 
-    //Get Json
-    $("#btn-get-json").click(function(){
-        var $copy = $("#form-area").clone(true); //.appendTo(document.body);
+    reset: function () {
+        this.id = "";
+        this.html = "";
+        this.dropTarget = false;
+    },
 
-        //remove helper items
-        $copy.find(".tools, .close, .cell-actions, .row-actions").remove();
+    init: function(id, html) {
+        this.id = id;
+        this.html = html;
+    },
 
-        var jsonStr = {
-            widgets: [],
-            layout: {
-                rows: []
-            }
+    initFromComponent: function(el) {
+        idCount = idCount + 1;
+        this.id = "comp" + idCount.toString();
+
+        var templateId = el.id.replace("c-", "t-")
+
+        var renderData = {
+            id: this.id,
+            idControl: "control" + idCount.toString(),
+            idControlHelp: "controlHelp" + idCount.toString()
         };
 
-        var frmRow = $copy.children();
-        var rowCount = frmRow.length;
-        for (var r = 0; r < rowCount; r++) {
-            var jsonRow = [];
+        this.html = Mustache.render(
+            document.getElementById(templateId).innerHTML, renderData
+        );
 
-            var frmCells = $(frmRow[r]).children();
-            var cellCount = frmCells.length;
-            for (var c = 0; c < cellCount; c++) {
-                var jsonCell = {};
-                var fc = frmCells[c];
-
-                jsonCell.col_wd = $(fc).data("col-wd");
-                jsonCell.widgets = [];
-
-                var widgets = $(fc).children(".draggable");
-                var widgetCount = widgets.length;
-                for (var w=0; w < widgetCount; w++) {
-
-                    var jsonWidget = {};
-                    var widget = widgets[w];
-
-                    jsonWidget.widget = $(widget).data("widget");
-                    //@todo placeholder for properties
-                    //@todo should find a smarter way to parse all data properties
-                    jsonWidget.label = "";
-                    jsonWidget.name = "";
-                    jsonWidget.validation = "";
-                    jsonWidget.validation_state = "";
-                    jsonWidget.default = "";
-                    jsonWidget.input_mask = "";
-                    jsonWidget.placeholder = "";
-                    jsonWidget.readonly = "";
-                    jsonWidget.disabled = "";
-                    jsonWidget.size_class = ""; //@todo : input-lg - input-sm
-
-                    jsonCell.widgets.push(jsonWidget);
-
-                }
-                jsonRow.push(jsonCell);
-
-            }
-
-            jsonStr.layout.rows.push(jsonRow)
+        if (el.classList.contains("c-container")) {
+            this.dropTarget = true;
         }
 
-        $("#html-code").html(hljs.highlight("json", JSON.stringify(jsonStr, null, 2)).value);
+    },
+
+    drop: function(parent) {
+        if (this.id != "") {
+            $(parent).append(this.html);
+            var el = document.getElementById(this.id);
+            el.classList.remove("w-75");
+
+            if (this.dropTarget) {
+                makeDropable(this.id);
+                //makeDraggableTarget(this.id);
+
+                el.classList.add("c-dropped");
+            } else {
+                el.classList.add("dropped");
+                makeDraggable(this.id);
+            }
+
+            this.reset;
+        }
+    },
+
+}
+
+function makeDropable(targetID) {
+    $("#" + targetID + " .drop-target").droppable({
+        accept: ".c-container, .component, .dropped, .c-dropped",
+        greedy: true,
+        classes: {
+            "ui-droppable-hover": "over"
+        },
+
+        drop: function (event, ui) {
+            componentData.drop(this);
+        },
+
+        deactivate: function (event, ui) {
+            //console.log(event);
+        }
+
+    });
+
+    $("#" + targetID + " .drop-target").sortable({
+
+    });
+
+}
+
+function makeDraggable(targetID) {
+    $("#" + targetID).draggable({
+        //helper: "clone",
+        appendTo: "body",
+        connectToSortable: ".drop-target, #form-area",
+        //handle: ".handle",
+        //cancel: "input,textarea,button,select,option,label,small, div",
+        //cursorAt: {top: 0, bottom:0},
+        //refreshPositions: true
+        stop: function (event, ui) {
+            $(".drop-target, #form-area").removeClass("over");
+            this.removeAttribute("style");
+        },
+    });
+}
 
 
-        return false;
-    })
+$(document).ready(function(){
+    $("#form-area").droppable({
+        accept: ".c-container, .c-dropped, .component",
+        greedy: true,
+        classes: {
+            "ui-droppable-hover": "over"
+        },
+        drop: function (event, ui) {
+            componentData.drop(this);
+        },
+
+        /*
+        deactivate: function(event, ui) {
+            componentData.reset();
+        }
+        */
+    });
+
+    $("#form-area").sortable({
+
+    });
+
+    $(".component").draggable({
+        appendTo: "main",
+        start: function(event, ui) {
+            if (componentData.id == "") {
+                componentData.initFromComponent(this);
+            }
+        },
+
+        stop: function(event, ui) {
+            componentData.reset();
+        },
+
+        helper: function (event) {
+            if (componentData.id == "") {
+                componentData.initFromComponent(this);
+            }
+
+            return $(componentData.html);
+        }
+        
+
+    });
+
 
 
 });
